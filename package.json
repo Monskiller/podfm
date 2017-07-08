@@ -1,0 +1,34 @@
+{
+  "name": "pod.fm",
+  "version": "1.1.0",
+  "description": "MusicBot for Discord",
+  "main": "podfm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd src && node ./podfm.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Monskiller/podfm.git"
+  },
+  "author": "Monskiller",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "buffered2": "*",
+    "discord.js": "^11.1.0",
+    "moment": "^2.18.1",
+    "node-opus": "*",
+    "snekfetch": "*",
+    "ytdl-core": "*",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "sodium-native": "*",
+    "uws": "*"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "pod.fm",
+    "bot",
+    "discord",
+    "music"
+  ]
+}
