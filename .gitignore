@@ -1,0 +1,20 @@
+bot.json
+package-lock.json
+
+# Keys
+
+pod.fm
+podfm.ppk
+
+# Dev Commands
+
+bash.js
+e.js
+sutil.js
+
+# Private files
+
+config.json
+prefixes.json
+volume.json
+.vscode

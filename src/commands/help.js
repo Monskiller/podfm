@@ -53,13 +53,13 @@ exports.run = async function (client, msg, args) {
 		try {
 			let cmd = require(`./${args[0]}.js`).usage;
 			delete require.cache[require.resolve(`./${args[0]}.js`)];
-			msg.channel.createMessage({ embed: {
+			msg.channel.send({ embed: {
 				color: config.options.embedColour,
-				title: `${cmd.main.replace("{command}", args[0].toLowerCase()).replace("{prefix}", prefixes[msg.channel.guild.id])} ${cmd.args}`,
+				title: `${cmd.main.replace("{command}", args[0].toLowerCase()).replace("{prefix}", client.prefixes[msg.guild.id])} ${cmd.args}`,
 				description: cmd.description
 			}});
 		} catch (err) {
-			msg.channel.createMessage({ embed: {
+			msg.channel.send({ embed: {
 				color: config.options.embedColour,
 				title: "Invalid command",
 				description: "Did you type the command correctly?"

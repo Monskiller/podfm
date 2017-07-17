@@ -10,12 +10,13 @@ exports.run = function (client, msg, args) {
 		color: config.options.embedColour,
 		title: "You need to be in a voicechannel"
 	}});
-
+	
+	/*
 	if (client.voiceConnections.find(vc => vc.id = msg.member.voiceChannelID)) return msg.channel.send({ embed: {
 		color: config.options.embedColour,
 		title: "I'm already in this voice channel"
 	}});
-
+	*/
 	if (!msg.guild.channels.get(msg.member.voiceChannelID).permissionsFor(client.user).has("CONNECT") ||
 		!msg.guild.channels.get(msg.member.voiceChannelID).speakable)
 		return msg.channel.send({ embed: {

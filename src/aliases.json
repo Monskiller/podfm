@@ -1,15 +1,16 @@
 {
-	"p" : "play",
-	"pl": "playlist",
-	"s" : "skip",
-	"q" : "queue",
-	"z"  : "undo",
+	"p"   : "play",
+	"pl"  : "playlist",
+	"s"   : "skip",
+	"q"   : "queue",
+	"n"   : "now",
+	"z"   : "undo",
 	"uq"  : "unqueue",
-	"n"  : "now",
-	"mh" : "movehere",
-	"fs" : "forceskip",
-	"ps" : "pause",
-	"r"  : "resume",
-	"st" : "stop",
-	"vcr": "voicereset"
+	"vol" : "volume",
+	"mh"  : "movehere",
+	"fs"  : "forceskip",
+	"ps"  : "pause",
+	"r"   : "resume",
+	"st"  : "stop",
+	"vcr" : "voicereset"
 }

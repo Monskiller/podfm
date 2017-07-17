@@ -13,11 +13,19 @@ exports.run = async function (client, msg, args) {
 		title: "There's no music playing"
 	}});
 
-	if (!args[0] || !parseInt(args[0])) return msg.channel.send({ embed: {
-		color: config.options.embedColour,
-		title: "Error",
-		description: "Please specify a number from 0 to 100"
-	}});
+	if (!/^\d+$/.test(args[0])) {
+
+		let vol = client.voiceConnections.get(msg.guild.id).dispatcher.volume * 50;
+		i=20,p=vol/100,f=i-i*p,x=[''];for(;i--;){x.push(i<f?'▱':'▰');}
+
+		msg.channel.send({ embed: {
+			color: config.options.embedColour,
+			title: "Current volume",
+			description: `${x.join('')} ${vol}%\nIf you're the DJ, specify a value to change it`
+		}});
+
+		return;
+	}
 
 	if (args[0] < 0 || args[0] > 100) return msg.channel.send({ embed: {
 		color: config.options.embedColour,

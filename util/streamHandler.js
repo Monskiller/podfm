@@ -8,11 +8,14 @@ exports.play = async function play(guild, client) {
 
 	if (guild.queue.length === 0) {
 		if (client.voiceConnections.get(guild.id) && client.voiceConnections.get(guild.id).channel.id) client.voiceConnections.get(guild.id).disconnect(); 
+		guild.dj = "";
+		
 		return client.channels.get(guild.msgc).send({ embed: {
 			color: config.options.embedColour,
 			title: "Playback finished",
 			description: `Use ${client.prefixes[guild.id]}play or ${client.prefixes[guild.id]}p to queue some music`,
 		}});
+
 	}
 
 	let song;

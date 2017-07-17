@@ -58,14 +58,6 @@ exports.run = async function (client, msg, args) {
 			})
 		});
 
-		client.queues[msg.guild.id].dj = msg.author.id;
-
-		msg.channel.send({ embed: {
-			color: config.options.embedColour,
-			title: "Voice Chat DJ",
-			description: `${msg.author.username}#${msg.author.discriminator} has now access to DJ commands`
-		}});
-
 		if (!client.voiceConnections.get(msg.guild.id) || !client.voiceConnections.get(msg.guild.id).channel.id) return;
 
 	} else if (msg.member.voiceChannelID !== client.voiceConnections.get(msg.guild.id).channel.id)
@@ -180,16 +172,21 @@ exports.run = async function (client, msg, args) {
 
 		const collector = await msg.channel.awaitMessages(m => m.author.id === msg.author.id && msg.guild && ((parseInt(m.content) && m.content >= 1 && m.content <= res.items.length) || m.content.toLowerCase().startsWith(client.prefixes[msg.guild.id] + "p") || m.content === "c"), {
 			maxMatches: 1,
-			time: 10000
-		})
-
-		if (!collector.first() || collector.first().content.toLowerCase().startsWith(client.prefixes[msg.guild.id] + "p") || collector.first().content === "c") {
-			if ((!collector.first() || collector.first().content === "c") && client.voiceConnections.get(msg.guild.id).channel.id && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();
-			return src.edit({ embed: {
+			time: 10000,
+			errors: ['time']
+		}).catch(c => {
+			src.edit({ embed: {
 				color: config.options.embedColour,
 				title: `Too slow`,
 				description: `You took more than 10 seconds to select`,
 			}});
+		})
+
+		if (collector == undefined) return;
+
+		if (!collector.first() || collector.first().content.toLowerCase().startsWith(client.prefixes[msg.guild.id] + "p") || collector.first().content === "c") {
+			if ((!collector.first() || collector.first().content === "c") && client.voiceConnections.get(msg.guild.id).channel.id && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();
+			return src.delete();
 		};
 
 		if (msg.channel.permissionsFor(client.user).has('MANAGE_MESSAGES')) collector.first().delete();
@@ -204,6 +201,17 @@ exports.run = async function (client, msg, args) {
 				text: `Requested by ${msg.author.username}#${msg.author.discriminator}`
 			}
 		}});
+
+		if (!client.queues[msg.guild.id].dj){
+
+			client.queues[msg.guild.id].dj = msg.author.id;
+
+			msg.channel.send({ embed: {
+				color: config.options.embedColour,
+				title: "Voice Chat DJ",
+				description: `${msg.author.username}#${msg.author.discriminator} has now access to DJ commands`
+			}});
+		}
 
 	};
 	
