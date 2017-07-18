@@ -8,17 +8,16 @@ const Discord	= require("discord.js");
 const moment	= require('moment');
 
 const client = new Discord.Client({
-	disableEvents: {
-		"GUILD_BAN_ADD"  : true,
-		"GUILD_BAN_REMOVE" : true,
-		"MESSAGE_DELETE" : true,
-		"MESSAGE_DELETE_BULK" : true,
-		"MESSAGE_UPDATE" : true,
-		"PRESENCE_UPDATE" : true,
-		"TYPING_START" : true,
-		"USER_UPDATE" : true
-	},
-	messageLimit: 0
+	disableEvents: [
+		"GUILD_BAN_ADD",
+		"GUILD_BAN_REMOVE",
+		"MESSAGE_DELETE",
+		"MESSAGE_DELETE_BULK",
+		"MESSAGE_UPDATE",
+		"PRESENCE_UPDATE",
+		"TYPING_START",
+		"USER_UPDATE"
+	]
 });
 
 client.queues   	= {};
@@ -40,7 +39,7 @@ client.on("guildCreate", g => {
 	g.defaultChannel.send("Sup! This is **pod.fm**, thank you for inviting me. You can view my commands with `.help`. Please report any issues to Monskiller#8879");
 
 	client.prefixes[g.id] = config.options.prefix;
-	client.queues[g.id] = { id: g.id, msgc: "", queue: [], svotes: [], repeat: "None" };
+	client.queues[g.id] = { id: g.id, msgc: "", dj: "", queue: [], svotes: [], repeat: "None" };
 });
 
 client.on("guildDelete", g => {
@@ -58,6 +57,8 @@ client.on("message", async msg => {
 		}});
 
 	if (!msg.content.startsWith(client.prefixes[msg.guild.id]) || !msg.channel.permissionsFor(client.user).has('SEND_MESSAGES') || !msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) return;
+
+	let regex = new RegExp(`^\\${client.prefixes[msg.guild.id]}\\w*[^0-9](\\d+)?`, 'i');
 
 	let command = msg.content.slice(client.prefixes[msg.guild.id].length).toLowerCase().split(" ")[0];
 	const args  = msg.content.split(" ").slice(1);
@@ -103,7 +104,7 @@ client.on("voiceStateUpdate", async (oldM, newM) => {
 					client.channels.get(client.queues[oldM.guild.id].msgc).send({ embed: {
 						color: config.options.embedColour,
 						title: "New Voice Chat DJ",
-						description: `${client.users.get(usr) ? `${client.users.get(usr).username}#${client.users.get(usr).discriminator}` : "Unknown"} Can now use DJ commands`,
+						description: `${client.users.get(usr) ? `${client.users.get(usr).username}#${client.users.get(usr).discriminator}` : "Unknown"} now has access to DJ commands`,
 					}});
 				}
 			}
