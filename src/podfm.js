@@ -58,10 +58,18 @@ client.on("message", async msg => {
 
 	if (!msg.content.startsWith(client.prefixes[msg.guild.id]) || !msg.channel.permissionsFor(client.user).has('SEND_MESSAGES') || !msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) return;
 
-	let regex = new RegExp(`^\\${client.prefixes[msg.guild.id]}\\w*[^0-9](\\d+)?`, 'i');
+	let regex = new RegExp(`^\\${client.prefixes[msg.guild.id]}(\\w*[^0-9])?(\\d+)?`, 'i')
 
-	let command = msg.content.slice(client.prefixes[msg.guild.id].length).toLowerCase().split(" ")[0];
-	const args  = msg.content.split(" ").slice(1);
+	let command = regex.exec(msg.content.split(" ")[0])[1].toLowerCase();
+	const match = msg.content.slice(msg.content.split(" ")[0].length)
+
+	const sel = regex.exec(msg.content.split(" ")[0])[2];
+	const args  = match.replace(/-\w+|--\w+/gi, '').trim();
+
+	let options = new Array();
+	if (match.match(/-\w+|--\w+/gi)) for (let opt of match.match(/-\w+|--\w+/gi)) {
+		options.push(opt.replace(/-|--/gi, ''));
+	}
 
 	delete require.cache[require.resolve("./aliases.json")];
 	let aliases = require("./aliases.json");
@@ -69,7 +77,7 @@ client.on("message", async msg => {
 
 	try {
 		delete require.cache[require.resolve(`./commands/${command}`)];
-		require(`./commands/${command}`).run(client, msg, args);
+		require(`./commands/${command}`).run(client, msg, args, options, sel);
 		log.cmd(msg, command);
 	} catch(e) {
 		if (e.message.includes("Cannot find module") || e.message.includes("ENOENT")) return;

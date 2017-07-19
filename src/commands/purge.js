@@ -1,4 +1,4 @@
-exports.run = async function(client, msg, args) {
+exports.run = async function(client, msg, args, options, sel) {
 
 	if (!permissions.isAdmin(msg.member)) return msg.channel.send({ embed: {
 		color: config.options.embedColour,
@@ -8,7 +8,7 @@ exports.run = async function(client, msg, args) {
 
 	if (msg.channel.permissionsFor(client.user).has('MANAGE_MESSAGES')) msg.delete();
 
-	let messagecount = parseInt(args[0]) ? parseInt(args[0]) : 1;
+	let messagecount = parseInt(args) ? parseInt(args) : 1;
 
 	let msgs = await msg.channel.fetchMessages({limit: messagecount});
 	msgs = msgs.filter(m => m.author.id === client.user.id)

@@ -1,4 +1,4 @@
-exports.run = async function(client, msg, args) {
+exports.run = async function(client, msg, args, options, sel) {
 
 	if(permissions.isBlocked(msg.member)) return msg.channel.send({ embed: {
 		color: config.options.embedColour,
@@ -10,15 +10,17 @@ exports.run = async function(client, msg, args) {
 		color: config.options.embedColour,
 		title: "There's nothing queued"
 	}});
-	console.log(args[0])
-	if (!parseInt(args[0]) && args[0] !== undefined || args[0] === 0) return msg.channel.send({ embed: {
+
+	/*
+	if (!parseInt(args) && args !== undefined || args === 0) return msg.channel.send({ embed: {
 		color: config.options.embedColour,
 		title: "You need to specify a number between 1 and 100"
 	}});
+	*/
 
 	let queue = client.queues[msg.guild.id].queue.slice(1);
 
-	let remove = parseInt(args[0]) ? parseInt(args[0]) : 1
+	let remove = parseInt(args) ? parseInt(args) : 1
 	let removed = 0;
 	let qi = queue.length - 1;
 

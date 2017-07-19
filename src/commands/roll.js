@@ -1,10 +1,10 @@
-exports.run = function (client, msg, args) {
+exports.run = function (client, msg, args, options, sel) {
 
 	if (msg.author.id !== "174573919544672258" && msg.author.id !==  "140986021100650497") return false;
 
 	let rx = /((?:\d*)d(?:\d+))/gi;
 	let rx2 = /^(?:(\d*)d(\d+))/i
-	let r = rx.test(args.join(' ')) ? args.join(' ').match(rx) : ['d6'];
+	let r = rx.test(args) ? args.match(rx) : ['d6'];
 	let result = new Array();
 	let sum;
 

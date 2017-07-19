@@ -1,6 +1,6 @@
 const timeParser = require("../../util/timeParser.js");
 
-exports.run = function (client, msg, args) {
+exports.run = function (client, msg, args, options, sel) {
 
 	if (client.queues[msg.guild.id].queue.length <= 1)
 		return msg.channel.send({ embed: {
@@ -11,7 +11,7 @@ exports.run = function (client, msg, args) {
 
 	let guild = client.queues[msg.guild.id];
 
-	let page = /^\d+$/.test(args[0]) ? parseInt(args[0]) : 1;
+	let page = /^\d+$/.test(args) ? parseInt(args) : 1;
 	let maxPage = Math.ceil(guild.queue.slice(1).length / 10);
 
 	if (page < 1)       page = 1;

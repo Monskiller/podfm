@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-exports.run = async function (client, msg, args) {
+exports.run = async function (client, msg, args, options, sel) {
 
 	if (client.queues[msg.guild.id].queue.length === 0)
 		return msg.channel.send({ embed: {
@@ -18,7 +18,7 @@ exports.run = async function (client, msg, args) {
 		title: "There was an error fetching a DM channel"
 	}});
 
-	if (args[0] && args[0] === "-q") {
+	if (options && options.includes('q')) {
 		let m = await msg.channel.send({ embed: {
 			color: config.options.embedColour,
 			title: "Compiling queue..."

@@ -1,4 +1,4 @@
-exports.run = function (client, msg, args) {
+exports.run = function (client, msg, args, options, sel) {
 
 	if (!(permissions.isDJ(msg.member, client) || permissions.isAdmin(msg.member)))
 		return msg.channel.send({ embed: {
@@ -7,23 +7,23 @@ exports.run = function (client, msg, args) {
 			description: "You need the DJ role to use this command."
 		}});
 
-	if (!args[0])
+	if (!args)
 		return msg.channel.send({ embed: {
 			color: config.options.embedColour,
 			title: `Repeat mode: ${client.queues[msg.guild.id].repeat}`,
 			description: `${client.prefixes[msg.guild.id]}repeat < a | c | n >\n\n[All, Current, None]`
 		}});
 
-	if (!(args[0] === "a" || args[0] === "c" || args[0] === "n"))
+	if (!(args === "a" || args === "c" || args === "n"))
 		return msg.channel.send({ embed: {
 			color: config.options.embedColour,
 			title: `Repeat mode can only be set to 'a', 'c' or 'n'`,
 			description: `[All, Current, None]`
 		}});
 
-	if 		(args[0] === "a")  client.queues[msg.guild.id].repeat = "All";
-	else if (args[0] === "c")  client.queues[msg.guild.id].repeat = "Current";
-	else if	(args[0] === "n")  client.queues[msg.guild.id].repeat = "None";
+	if 		(args === "a")  client.queues[msg.guild.id].repeat = "All";
+	else if (args === "c")  client.queues[msg.guild.id].repeat = "Current";
+	else if	(args === "n")  client.queues[msg.guild.id].repeat = "None";
 
 	msg.channel.send({ embed: {
 		color: config.options.embedColour,

@@ -1,4 +1,4 @@
-exports.run = async function(client, msg, args) {
+exports.run = async function(client, msg, args, options, sel) {
 
 	if (msg.author.id !== "174573919544672258") return false;
 

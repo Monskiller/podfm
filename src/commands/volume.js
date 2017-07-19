@@ -1,6 +1,6 @@
 const ytutil = require("../../util/youtubeHandler.js");
 
-exports.run = async function (client, msg, args) {
+exports.run = async function (client, msg, args, options, sel) {
 	
 	if ( !(permissions.isDJ(msg.member, client) || permissions.isAdmin(msg.member)) ) return msg.channel.send({ embed: {
 		color: config.options.embedColour,
@@ -13,7 +13,7 @@ exports.run = async function (client, msg, args) {
 		title: "There's no music playing"
 	}});
 
-	if (!/^\d+$/.test(args[0])) {
+	if (!/^\d+$/.test(args)) {
 
 		let vol = client.voiceConnections.get(msg.guild.id).dispatcher.volume * 50;
 		i=20,p=vol/100,f=i-i*p,x=[''];for(;i--;){x.push(i<f?'▱':'▰');}
@@ -27,23 +27,23 @@ exports.run = async function (client, msg, args) {
 		return;
 	}
 
-	if (args[0] < 0 || args[0] > 100) return msg.channel.send({ embed: {
+	if (args < 0 || args > 100) return msg.channel.send({ embed: {
 		color: config.options.embedColour,
 		title: "Invalid volume range",
 		description: "Please specify a number from 0 to 100"
 	}});
 
-	client.voiceConnections.get(msg.guild.id).dispatcher.setVolume(args[0]/50);
-	client.volume[msg.guild.id] = args[0]/50;
+	client.voiceConnections.get(msg.guild.id).dispatcher.setVolume(args/50);
+	client.volume[msg.guild.id] = args/50;
 
 	await ytutil.fsWriteFile(__dirname + '/../volume.json', JSON.stringify(client.volume, "", "\t"))
 		.catch(log.err);
 		
-	i=20,p=args[0]/100,f=i-i*p,x=[''];for(;i--;){x.push(i<f?'▱':'▰');}
+	i=20,p=args/100,f=i-i*p,x=[''];for(;i--;){x.push(i<f?'▱':'▰');}
 	msg.channel.send({ embed: {
 		color: config.options.embedColour,
 		title: "Volume set",
-		description: `${x.join('')} ${args[0]}%`
+		description: `${x.join('')} ${args}%`
 	}});
 }
 

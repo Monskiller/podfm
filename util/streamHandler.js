@@ -59,7 +59,9 @@ exports.play = async function play(guild, client) {
 		if (guild.repeat === "All") guild.queue.push(guild.queue[0]);
 		if (guild.repeat !== "Current") guild.queue.shift();
 		guild.svotes = [];
-		exports.play(guild, client);
+		setTimeout( function() {
+			exports.play(guild, client);
+		}, 1000);
 	});
 
 	client.voiceConnections.get(guild.id).on("disconnect", () => {

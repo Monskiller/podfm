@@ -1,8 +1,8 @@
 const fs = require("fs");
 
-exports.run = async function (client, msg, args) {
+exports.run = async function (client, msg, args, options, sel) {
 
-	if (!args[0]) {
+	if (!args) {
 
 		let commands = await fs.readdirSync(__dirname);
 		let cmdList = new Array();
@@ -51,11 +51,11 @@ exports.run = async function (client, msg, args) {
 	} else {
 
 		try {
-			let cmd = require(`./${args[0]}.js`).usage;
-			delete require.cache[require.resolve(`./${args[0]}.js`)];
+			let cmd = require(`./${args}.js`).usage;
+			delete require.cache[require.resolve(`./${args}.js`)];
 			msg.channel.send({ embed: {
 				color: config.options.embedColour,
-				title: `${cmd.main.replace("{command}", args[0].toLowerCase()).replace("{prefix}", client.prefixes[msg.guild.id])} ${cmd.args}`,
+				title: `${cmd.main.replace("{command}", args.toLowerCase()).replace("{prefix}", client.prefixes[msg.guild.id])} ${cmd.args}`,
 				description: cmd.description
 			}});
 		} catch (err) {

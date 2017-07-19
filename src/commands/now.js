@@ -1,6 +1,6 @@
 const timeParser = require("../../util/timeParser.js");
 
-exports.run = function (client, msg, args) {
+exports.run = function (client, msg, args, options, sel) {
 
 	if (client.queues[msg.guild.id].queue.length === 0)
 		return msg.channel.send({ embed: {
