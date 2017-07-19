@@ -13,6 +13,7 @@
 	"prop" : {
 		"owners"   : [],
 		"blocked"  : []
-	}
-
+	},
+	
+	"version": 1.0.0
 }
