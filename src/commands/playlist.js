@@ -125,7 +125,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
 	if (res.type !== "search") {
 
-		res.items.map(v => guild.queue.push({ id: v.id, title: v.title, req: msg.author.id, src: res.src, durl: (res.src === "soundcloud" ? scrxm[1] : undefined) }));
+		res.items.map(v => guild.queue.push({ id: v.id, title: v.title, req: { username: msg.author.username, discriminator: msg.author.discriminator, id: msg.author.id }, src: res.src, durl: (res.src === "soundcloud" ? scrxm[1] : undefined) }));
 		let embed = {
 			color: config.options.embedColour,
 			title: `Enqueued`,
@@ -141,7 +141,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
 			res.songs = await ytutil.getPlaylist(res.items[sel - 1].id.playlistId, options.includes('sh') | options.includes('shuffle') ? Infinity : "15"); 
 			if (options.includes('sh') | options.includes('shuffle')) res.songs = ytutil.shuffle(res.songs);
-			res.songs.map(v => guild.queue.push({ id: v.id, title: v.title, req: msg.author.id, src: res.src }));
+			res.songs.map(v => guild.queue.push({ id: v.id, title: v.title, req: { username: msg.author.username, discriminator: msg.author.discriminator, id: msg.author.id }, src: res.src }));
 
 			msg.channel.send({embed: {
 				color: config.options.embedColour,
@@ -186,7 +186,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
 			res.songs = await ytutil.getPlaylist(res.items[collector.first().content - 1].id.playlistId, options.includes('sh') | options.includes('shuffle') ? Infinity : "15"); 
 			if (options.includes('sh') | options.includes('shuffle')) res.songs = ytutil.shuffle(res.songs);
-			res.songs.map(v => guild.queue.push({ id: v.id, title: v.title, req: msg.author.id, src: res.src }));
+			res.songs.map(v => guild.queue.push({ id: v.id, title: v.title, req: { username: msg.author.username, discriminator: msg.author.discriminator, id: msg.author.id }, src: res.src }));
 
 			src.edit({embed: {
 				color: config.options.embedColour,
@@ -211,6 +211,7 @@ exports.run = async function (client, msg, args, options, sel) {
 		}});
 	}
 
+	guild.auto = false
 	sthandle.play(guild, client);
 
 }
@@ -218,7 +219,7 @@ exports.run = async function (client, msg, args, options, sel) {
 exports.usage = {
 	main: "{prefix}{command}{select}",
 	args: "[--shuffle | -sh] <YouTube Playlist Search/Playlist URL>",
-	description: "Queue a YT Playlist. Use `--shuffle` or `-sh` to shuffle before queuing\nUse `.playlist[number]` to pre-select a playlist, skipping the list\ne.g. `.playlist1 <playlist>`",
+	description: "Queue a YT Playlist. Use `--shuffle` or `-sh` to shuffle before queuing\n\nUse `.playlist[number]` to pre-select a playlist, skipping the list\ne.g. `.playlist1 <playlist>`",
 	adminOnly: false,
 	DJ: false
 };

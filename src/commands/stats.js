@@ -21,8 +21,8 @@ exports.run = async function(client, msg, args, options, sel) {
 			{ name: `Node.js`,		  value: process.version,													inline: true },
 			{ name: `Streams`,        value: `► ${client.voiceConnections.array().filter(vc => vc.speaking).length}, ❚❚ ${client.voiceConnections.array().filter(vc => !vc.speaking).length}`, inline: true },
 			{ name: `Servers`,		  value: client.guilds.size,												inline: true },
-			{ name: "Latency",		  value: `${Math.floor(client.ping)}ms`,							inline: true },
-			{ name: "Version",		  value: config.version,							inline: true }
+			{ name: "Latency",		  value: `${Math.floor(client.ping)}ms`,									inline: true },
+			{ name: "Version",		  value: config.version,													inline: true }
 		]
 	}});
 

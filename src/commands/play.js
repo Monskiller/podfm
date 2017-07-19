@@ -149,7 +149,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
 	if (res.type !== "search") {
 
-		res.items.map(v => guild.queue.push({ id: v.id, title: v.title, req: msg.author.id, src: res.src, durl: (res.src === "soundcloud" ? scrxm[1] : undefined) }));
+		res.items.map(v => guild.queue.push({ id: v.id, title: v.title, req: { username: msg.author.username, discriminator: msg.author.discriminator, id: msg.author.id }, src: res.src, durl: (res.src === "soundcloud" ? scrxm[1] : undefined) }));
 		let embed = {
 			color: config.options.embedColour,
 			title: `Enqueued`,
@@ -163,7 +163,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
 		if (sel) {
 
-			guild.queue.push({ id: res.items[sel - 1].id.videoId, title: res.items[sel - 1].snippet.title, req: msg.author.id, src: "youtube" });
+			guild.queue.push({ id: res.items[sel - 1].id.videoId, title: res.items[sel - 1].snippet.title, req: { username: msg.author.username, discriminator: msg.author.discriminator, id: msg.author.id }, src: "youtube" });
 
 			msg.channel.send({ embed: {
 				color: config.options.embedColour,
@@ -206,7 +206,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
 			if (msg.channel.permissionsFor(client.user).has('MANAGE_MESSAGES')) collector.first().delete();
 			
-			guild.queue.push({ id: res.items[collector.first().content - 1].id.videoId, title: res.items[collector.first().content - 1].snippet.title, req: msg.author.id, src: "youtube" });
+			guild.queue.push({ id: res.items[collector.first().content - 1].id.videoId, title: res.items[collector.first().content - 1].snippet.title, req: { username: msg.author.username, discriminator: msg.author.discriminator, id: msg.author.id }, src: "youtube" });
 
 			src.edit({embed: {
 				color: config.options.embedColour,
@@ -230,14 +230,17 @@ exports.run = async function (client, msg, args, options, sel) {
 			description: `${msg.author.username}#${msg.author.discriminator} now has access to DJ commands`
 		}});
 	}
+
+	guild.auto = false;
+	if ((options.includes('ap') | options.includes('auto') | options.includes('autoplay')) && res.type != "playlist") guild.auto = true;
 	
 	sthandle.play(guild, client);
 }
 
 exports.usage = {
-	args: "<YouTube URL/Playlist/Search | Soundcloud URL>",
+	args: "[--autoplay | -auto] <YouTube URL/Playlist/Search | Soundcloud URL>",
 	main: "{prefix}{command}{select}",
-	description: "Play the specified song. Use `.play[number]` to pre-select a song, skipping the list\ne.g. `.play1 <song>`",
+	description: "Play the specified song. Use `--autoplay` or `-auto` for a continuous play from relevant YT videos\n\nUse `.play[number]` to pre-select a song, skipping the list\ne.g. `.play1 <song>`",
 	adminOnly: false,
 	DJ: false
 };

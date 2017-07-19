@@ -16,7 +16,7 @@ exports.run = function(client, msg, args, options, sel) {
 		title: `You need to specify a number higher than 0, and less than ${client.queues[msg.guild.id].queue.length}`
 	}});
 
-	if (client.queues[msg.guild.id].queue[Math.round(args)].req !== msg.author.id && !permissions.isAdmin(msg.member))
+	if (client.queues[msg.guild.id].queue[Math.round(args)].req.id !== msg.author.id && !permissions.isAdmin(msg.member))
 		return msg.channel.send({ embed: {
 			color: config.options.embedColour,
 			title: "You can't unqueue that"

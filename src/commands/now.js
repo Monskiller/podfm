@@ -17,9 +17,9 @@ exports.run = function (client, msg, args, options, sel) {
 		color       : config.options.embedColour,
 		title       : track.title,
 		url         : track.src !== "soundcloud" ? `https://youtu.be/${track.id}` : undefined,
-		description : `${timeParser.formatSeconds(client.voiceConnections.get(msg.guild.id).dispatcher.time / 1000)}${track.src === "youtube" ? "/" + timeParser.formatSeconds(track.duration) : ""}\n${x.join('')}`,
+		description : `${timeParser.formatSeconds(client.voiceConnections.get(msg.guild.id).dispatcher.time / 1000)}${track.src === "youtube" ? "/" + timeParser.formatSeconds(track.duration) : ""} ${guild.repeat == 'None' ? '' : guild.repeat == 'All' ? '⟳ᴬ' : '⟳¹'} ${guild.auto ? '↯' : ''}\n${x.join('')}`,
 		footer: {
-			text: `Requested by ${client.users.get(track.req) ? `${client.users.get(guild.queue[0].req).username}#${client.users.get(guild.queue[0].req).discriminator}` : "Unknown"}`
+			text: `Requested by ${guild.queue[0].req ? `${guild.queue[0].req.username}#${guild.queue[0].req.discriminator}` : "Unknown"}`
 		}
 	};
 

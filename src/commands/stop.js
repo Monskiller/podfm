@@ -12,6 +12,7 @@ exports.run = function (client, msg, args, options, sel) {
 	}});
 
 	client.queues[msg.guild.id].repeat = "None";
+	client.queues[msg.guild.id].auto = false;
 	client.queues[msg.guild.id].queue.splice(1, client.queues[msg.channel.guild.id].queue.length);
 	client.voiceConnections.get(msg.guild.id).dispatcher.end();
 

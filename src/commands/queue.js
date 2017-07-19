@@ -30,8 +30,8 @@ exports.run = function (client, msg, args, options, sel) {
 		description : `${timeParser.formatSeconds(client.voiceConnections.get(msg.guild.id).dispatcher.time / 1000)}${track.src === "youtube" ? "/" + timeParser.formatSeconds(track.duration) : ""}\n${x.join('')}`,
 		fields: [
 			{
-				name: "Queue",
-				value: guild.queue.slice(startQueue, endQueue).map((item, i) => `${startQueue + i}. ${item.title} - ${client.users.get(item.req) ? `**${client.users.get(guild.queue[startQueue + i].req).username}#${client.users.get(guild.queue[startQueue + i].req).discriminator}**` : "**Unknown**"}`).join("\n")
+				name: `Queue ${guild.repeat == 'None' ? '' : guild.repeat == 'All' ? '⟳ᴬ' : '⟳¹'} ${guild.auto ? '↯' : ''}`,
+				value: guild.queue.slice(startQueue, endQueue).map((item, i) => `${startQueue + i}. ${item.title} - ${guild.queue[startQueue + i].req ? `**${guild.queue[startQueue + i].req.username}#${guild.queue[startQueue + i].req.discriminator}**` : "**Unknown**"}`).join("\n")
 			}
 		],
 		footer: {

@@ -6,6 +6,14 @@ exports.play = async function play(guild, client) {
 
 	if (!client.guilds.has(guild.id) ||	!client.voiceConnections.has(guild.id) || !client.voiceConnections.get(guild.id).channel.id || client.voiceConnections.get(guild.id).dispatcher) return;
 
+	if (guild.auto) {
+
+		let related = await ytutil.getRelated(guild.queue[guild.queue.length - 1].id);
+		let index = Math.floor(Math.random() * related.length)
+		guild.queue.push({ id: related[index].id.videoId, title: related[index].snippet.title, req: { username: client.user.username, discriminator: client.user.discriminator, id: '' }, src: "youtube" });
+
+	}
+
 	if (guild.queue.length === 0) {
 		if (client.voiceConnections.get(guild.id) && client.voiceConnections.get(guild.id).channel.id) client.voiceConnections.get(guild.id).disconnect(); 
 		guild.dj = "";
@@ -41,10 +49,10 @@ exports.play = async function play(guild, client) {
 
 	client.channels.get(guild.msgc).send({embed: {
 		color: config.options.embedColour,
-		title: "Now Playing",
+		title: `Now Playing ${guild.repeat == 'None' ? '' : guild.repeat == 'All' ? '⟳ᴬ' : '⟳¹'} ${guild.auto ? '↯' : ''}`,
 		description: `${guild.queue[0].title} [Link](https://youtu.be/${guild.queue[0].id})`, //(https://youtu.be/${guild.queue[0].id})`
 		footer: {
-			text: `Requested by ${client.users.get(guild.queue[0].req) ? `${client.users.get(guild.queue[0].req).username}#${client.users.get(guild.queue[0].req).discriminator}` : "Unknown"}`
+			text: `Requested by ${guild.queue[0].req ? `${guild.queue[0].req.username}#${guild.queue[0].req.discriminator}` : "Unknown"}`
 		}
 	}});
 

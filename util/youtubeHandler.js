@@ -20,6 +20,21 @@ module.exports = {
 		return results.body.items;
 	},
 
+	async getRelated(vidID) {
+
+		let results = await sf.get("https://www.googleapis.com/youtube/v3/search").query({
+			part       			: "snippet",
+			maxResults 			: "5",
+			type       			: "video",
+			relatedToVideoId	: vidID,
+			key        			: ytk
+		}).catch(err => {
+			return [];
+		})
+
+		return results.body.items;
+	},
+
 	async getPlaylist(id, limit, page = "", videos = []) {
 
 		let req = await sf.get('https://www.googleapis.com/youtube/v3/playlistItems').query({

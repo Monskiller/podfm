@@ -30,7 +30,7 @@ client.on("ready", async () => {
 
 	client.guilds.forEach(g => {
 		if (!client.prefixes[g.id]) client.prefixes[g.id] = config.options.prefix;
-		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, msgc: "", dj: "", queue: [], svotes: [], repeat: "None" };
+		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, msgc: "", dj: "", queue: [], svotes: [], repeat: "None", auto: false };
 	});
 });
 
@@ -39,7 +39,7 @@ client.on("guildCreate", g => {
 	g.defaultChannel.send("Sup! This is **pod.fm**, thank you for inviting me. You can view my commands with `.help`. Please report any issues to Monskiller#8879");
 
 	client.prefixes[g.id] = config.options.prefix;
-	client.queues[g.id] = { id: g.id, msgc: "", dj: "", queue: [], svotes: [], repeat: "None" };
+	client.queues[g.id] = { id: g.id, msgc: "", dj: "", queue: [], svotes: [], repeat: "None", auto: false };
 });
 
 client.on("guildDelete", g => {
@@ -94,11 +94,35 @@ client.on("message", async msg => {
 client.on("voiceStateUpdate", async (oldM, newM) => {
 	if (!client.voiceConnections.get(oldM.guild.id) || !client.voiceConnections.get(newM.guild.id)) return;
 
+	if (oldM.voiceChannelID == client.voiceConnections.get(oldM.guild.id).channel.id && client.voiceConnections.get(oldM.guild.id).channel.members.array().filter(m => !m.user.bot).length == 0 && client.queues[oldM.guild.id].auto) {
+
+		setTimeout( () => {
+			if (client.voiceConnections.get(oldM.guild.id).channel.members.array().filter(m => !m.user.bot).length == 0) {
+				client.voiceConnections.get(oldM.guild.id).disconnect();
+			}
+		}, 4500)
+
+		client.voiceConnections.get(oldM.guild.id).on("disconnect", () => {
+			client.voiceConnections.forEach(vc => {
+				if (vc.dispatcher) {
+					if (!vc.dispatcher.paused) {
+						setTimeout( function() {
+							vc.dispatcher.pause();
+							setTimeout( function() {
+								vc.dispatcher.resume();
+							}, 250);
+						}, 100);
+					}
+				}
+			})
+		})
+	}
+
 	if (oldM.voiceChannelID == client.voiceConnections.get(oldM.guild.id).channel.id && newM.voiceChannelID !== oldM.voiceChannelID && client.queues[oldM.guild.id].dj == oldM.id){
 		let nextDJ = client.queues[oldM.guild.id].queue.find(q => q.req !== oldM.id);
 
 		setTimeout( () => {
-			if (!client.voiceConnections.get(oldM.guild.id).channel.members.has(oldM.id)){
+			if (client.voiceConnections.get(oldM.guild.id) && !client.voiceConnections.get(oldM.guild.id).channel.members.has(oldM.id)){
 				if (nextDJ){
 					client.queues[oldM.guild.id].dj = nextDJ.req;
 					client.channels.get(client.queues[oldM.guild.id].msgc).send({ embed: {

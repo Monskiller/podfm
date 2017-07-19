@@ -34,6 +34,7 @@ exports.run = function (client, msg, args, options, sel) {
 
 	tempqueue.splice(0, 0, client.queues[msg.guild.id].queue[0])
 	client.queues[msg.guild.id].queue = tempqueue;
+	client.queues[msg.guild.id].auto = false;
 
 	msg.channel.send({ embed: {
 		color: config.options.embedColour,

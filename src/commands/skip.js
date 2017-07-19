@@ -28,7 +28,7 @@ exports.run = function (client, msg, args, options, sel) {
 	let voiceMembers = Math.round(msg.guild.channels.get(msg.member.voiceChannelID).members.filter(m => !m.user.bot).array().length / 2);
 	let guild = client.queues[msg.guild.id];
 	
-	if (client.queues[msg.guild.id].svotes.length >= voiceMembers || guild.queue[0].req === msg.author.id)
+	if (client.queues[msg.guild.id].svotes.length >= voiceMembers || guild.queue[0].req.id === msg.author.id)
 		return client.voiceConnections.get(msg.guild.id).dispatcher.end();
 
 	msg.channel.send({ embed: {

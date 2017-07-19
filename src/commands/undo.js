@@ -32,7 +32,7 @@ exports.run = async function(client, msg, args, options, sel) {
 	for (let i = qi; i > -1; i--) {
 		if (removed === remove) break;
 
-		if (queue[i].req === msg.author.id) {
+		if (queue[i].req.id === msg.author.id) {
 			queue.splice(i, 1)
 			removed++;
 		}
