@@ -235,9 +235,9 @@ exports.run = async function (client, msg, args, options, sel) {
 }
 
 exports.usage = {
-	main: "{prefix}{command}",
 	args: "<YouTube URL/Playlist/Search | Soundcloud URL>",
-	description: "Play the specified song",
+	main: "{prefix}{command}{select}",
+	description: "Play the specified song. Use `.play[number]` to pre-select a song, skipping the list\ne.g. `.play1 <song>`",
 	adminOnly: false,
 	DJ: false
 };

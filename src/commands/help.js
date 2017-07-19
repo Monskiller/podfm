@@ -50,12 +50,14 @@ exports.run = async function (client, msg, args, options, sel) {
 
 	} else {
 
+		let argss = args.split(' ')[0];
+
 		try {
-			let cmd = require(`./${args}.js`).usage;
-			delete require.cache[require.resolve(`./${args}.js`)];
+			let cmd = require(`./${argss}.js`).usage;
+			delete require.cache[require.resolve(`./${argss}.js`)];
 			msg.channel.send({ embed: {
 				color: config.options.embedColour,
-				title: `${cmd.main.replace("{command}", args.toLowerCase()).replace("{prefix}", client.prefixes[msg.guild.id])} ${cmd.args}`,
+				title: `${cmd.main.replace("{command}", argss.toLowerCase()).replace("{prefix}", client.prefixes[msg.guild.id]).replace("{select}", '[number]')} ${cmd.args}`,
 				description: cmd.description
 			}});
 		} catch (err) {

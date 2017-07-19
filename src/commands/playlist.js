@@ -216,9 +216,9 @@ exports.run = async function (client, msg, args, options, sel) {
 }
 
 exports.usage = {
-	main: "{prefix}{command}",
+	main: "{prefix}{command}{select}",
 	args: "[--shuffle | -sh] <YouTube Playlist Search/Playlist URL>",
-	description: "Queue a YT Playlist. Use `--shuffle` or `-sh` to shuffle before queuing",
+	description: "Queue a YT Playlist. Use `--shuffle` or `-sh` to shuffle before queuing\nUse `.playlist[number]` to pre-select a playlist, skipping the list\ne.g. `.playlist1 <playlist>`",
 	adminOnly: false,
 	DJ: false
 };
