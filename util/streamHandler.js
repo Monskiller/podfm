@@ -6,7 +6,7 @@ exports.play = async function play(guild, client) {
 
 	if (!client.guilds.has(guild.id) ||	!client.voiceConnections.has(guild.id) || !client.voiceConnections.get(guild.id).channel.id || client.voiceConnections.get(guild.id).dispatcher) return;
 
-	if (guild.auto) {
+	if (guild.auto && guild.queue.length <= 1) {
 
 		let related = await ytutil.getRelated(guild.queue[guild.queue.length - 1].id);
 		let index = Math.floor(Math.random() * related.length)

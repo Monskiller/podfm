@@ -2,8 +2,8 @@ const ytutil           = require("../../util/youtubeHandler.js");
 const scutil           = require("../../util/soundcloudHandler.js");
 const sthandle         = require("../../util/streamHandler.js");
 
-const ytrx = new RegExp("(?:youtube\\.com.*(?:\\?|&)(?:v|list)=|youtube\\.com.*embed\\/|youtube\\.com.*v\\/|youtu\\.be\\/)((?!videoseries)[a-zA-Z0-9_-]*)");
-const scrx = new RegExp("((https:\/\/)|(http:\/\/)|(www.)|(s))+(soundcloud.com\/)+[a-zA-Z0-9-.]+(\/)+[a-zA-Z0-9-.]+");
+const ytrx = /(?:youtube\.com.*(?:\?|&)(?:v|list)=|youtube\\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9\_\-]*)/;
+const scrx = /((https:\/\/)|(http:\/\/)|(www.)|(s))+(soundcloud.com\/)+[a-zA-Z0-9-.]+(\/)+[a-zA-Z0-9-.]+/;
 
 exports.run = async function (client, msg, args, options, sel) {
 

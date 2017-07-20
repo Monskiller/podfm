@@ -64,11 +64,12 @@ client.on("message", async msg => {
 	const match = msg.content.slice(msg.content.split(" ")[0].length)
 
 	const sel = regex.exec(msg.content.split(" ")[0])[2];
-	const args  = match.replace(/-\w+|--\w+/gi, '').trim();
+	const optrx = /(?:[^\w]-\w+|--\w+)|^(?:-\w+|--\w+)/gi
+	const args  = match.replace(optrx, '').trim();
 
 	let options = new Array();
-	if (match.match(/-\w+|--\w+/gi)) for (let opt of match.match(/-\w+|--\w+/gi)) {
-		options.push(opt.replace(/-|--/gi, ''));
+	if (match.match(optrx)) for (let opt of match.match(optrx)) {
+		options.push(opt.replace(/-|--/gi, '').trim());
 	}
 
 	delete require.cache[require.resolve("./aliases.json")];
@@ -98,24 +99,9 @@ client.on("voiceStateUpdate", async (oldM, newM) => {
 
 		setTimeout( () => {
 			if (client.voiceConnections.get(oldM.guild.id).channel.members.array().filter(m => !m.user.bot).length == 0) {
-				client.voiceConnections.get(oldM.guild.id).disconnect();
+				client.queues[oldM.guild.id].auto = false;
 			}
 		}, 4500)
-
-		client.voiceConnections.get(oldM.guild.id).on("disconnect", () => {
-			client.voiceConnections.forEach(vc => {
-				if (vc.dispatcher) {
-					if (!vc.dispatcher.paused) {
-						setTimeout( function() {
-							vc.dispatcher.pause();
-							setTimeout( function() {
-								vc.dispatcher.resume();
-							}, 250);
-						}, 100);
-					}
-				}
-			})
-		})
 	}
 
 	if (oldM.voiceChannelID == client.voiceConnections.get(oldM.guild.id).channel.id && newM.voiceChannelID !== oldM.voiceChannelID && client.queues[oldM.guild.id].dj == oldM.id){

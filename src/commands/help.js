@@ -29,7 +29,8 @@ exports.run = async function (client, msg, args, options, sel) {
 		let fields = [
 			{ name: "Aliases", value: `\`\`\`\n${aliases}\n\`\`\``, inline: true },
 			{ name: "Support", value: `**Getting Started**\n1. Join a voicechannel\n2. ${client.prefixes[msg.channel.guild.id]}play <YouTube URL/Query | Soundcloud URL>\n3. If prompted, select a song (1-9)\n\n` },
-			{ name: "Use/Create the following roles", value: `**NoMusicPerms**: Revokes permission to use this bot.\n**DJ**: Allows the use of admin commands.` }
+			{ name: "Use/Create the following roles", value: `**NoMusicPerms**: Revokes permission to use this bot.\n**DJ**: Allows the use of admin commands.` },
+			{ name: 'Legend', value: '↯ - Auto mode is on. Bot finds 5 related songs and queues one at random\n⟳ᴬ - Repeat All\n⟳¹ - Repeat Current'}
 		]
 		adminCmds.length > 0 && fields.unshift({ name: "Admin Commands", value: `${adminCmds.join('\n')}`})
 		djCmds.length > 0 && fields.unshift({ name: "DJ Commands", value: `${djCmds.join('\n')}`})
