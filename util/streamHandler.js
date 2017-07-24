@@ -9,7 +9,7 @@ exports.play = async function play(guild, client) {
 	if (guild.auto && guild.queue.length <= 1) {
 
 		let related = await ytutil.getRelated(guild.queue[guild.queue.length - 1].id);
-		let index = Math.floor(Math.random() * related.length)
+		let index = Math.floor(Math.random() * (related.length-1))+1
 		guild.queue.push({ id: related[index].id.videoId, title: related[index].snippet.title, req: { username: client.user.username, discriminator: client.user.discriminator, id: '' }, src: "youtube" });
 
 	}
@@ -62,6 +62,10 @@ exports.play = async function play(guild, client) {
 	}, 500);
 
 	if (!client.voiceConnections.get(guild.id).dispatcher) return client.voiceConnections.get(guild.id).disconnect();
+
+	client.voiceConnections.get(guild.id).dispatcher.on("start", () => {
+		client.voiceConnections.get(guild.id).player.streamingData.pausedTime = 0;
+	});
 	
 	client.voiceConnections.get(guild.id).dispatcher.on("end", () => {
 		if (guild.repeat === "All") guild.queue.push(guild.queue[0]);
@@ -71,19 +75,4 @@ exports.play = async function play(guild, client) {
 			exports.play(guild, client);
 		}, 1000);
 	});
-
-	client.voiceConnections.get(guild.id).on("disconnect", () => {
-		client.voiceConnections.forEach(vc => {
-			if (vc.dispatcher) {
-				if (!vc.dispatcher.paused) {
-					setTimeout( function() {
-						vc.dispatcher.pause();
-						setTimeout( function() {
-							vc.dispatcher.resume();
-						}, 250);
-					}, 100);
-				}
-			}
-		})
-	})
 };

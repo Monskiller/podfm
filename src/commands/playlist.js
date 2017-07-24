@@ -50,7 +50,7 @@ exports.run = async function (client, msg, args, options, sel) {
 							vc.dispatcher.pause();
 							setTimeout( function() {
 								vc.dispatcher.resume();
-							}, 250);
+							}, 300);
 						}, 100);
 					}
 				}
@@ -67,6 +67,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
 	let guild = client.queues[msg.guild.id];
 	guild.msgc = msg.channel.id;
+	guild.vcid = client.voiceConnections.get(msg.guild.id).channel.id;
 
 	if (guild.queue.length >= 30) return msg.channel.send({ embed: {
 		color: config.options.embedColour,
@@ -175,7 +176,10 @@ exports.run = async function (client, msg, args, options, sel) {
 				}});
 			})
 
-			if (collector == undefined) return;
+			if (collector == undefined) {
+				if (client.voiceConnections.get(msg.guild.id).channel.id && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();
+				return;
+			}
 
 			if (!collector.first() || collector.first().content.toLowerCase().startsWith(client.prefixes[msg.guild.id] + "p") || collector.first().content === "c") {
 				if ((!collector.first() || collector.first().content === "c") && client.voiceConnections.get(msg.guild.id).channel.id && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();

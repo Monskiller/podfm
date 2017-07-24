@@ -13,11 +13,11 @@ exports.run = async function(client, msg, args, options, sel) {
 
     let dj = client.queues[msg.guild.id].dj;
     
-    if (dj == msg.author.id || permissions.isDJ(msg.member, client)) {
+    if (dj == msg.author.id || permissions.isDJ(msg.member, client) || permissions.isAdmin(msg.member)) {
 
-        let mention = msg.mentions.members.filter(u => !(permissions.isAdmin(u) || permissions.isDJ(u, client) || u.user.bot))
-
-        if (mention.first()) client.queues[msg.guild.it].dj = mention.first().id;
+        let mention = msg.mentions.members.filter(u => !(permissions.isAdmin(u) || permissions.isDJ(u, client) || u.user.bot || permissions.isBlocked(u)))
+        if (mention.first()) client.queues[msg.guild.id].dj = mention.first().id;
+        dj = client.queues[msg.guild.id].dj;
 
         msg.channel.send({ embed: {
             color: config.options.embedColour,

@@ -30,8 +30,13 @@ client.on("ready", async () => {
 
 	client.guilds.forEach(g => {
 		if (!client.prefixes[g.id]) client.prefixes[g.id] = config.options.prefix;
-		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, msgc: "", dj: "", queue: [], svotes: [], repeat: "None", auto: false };
+		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, msgc: "", dj: "", vcid: "", queue: [], svotes: [], repeat: "None", auto: false };
 	});
+});
+
+client.on('disconnect', (event) => {
+    log.warn(`Disconnected with close event: ${event.code}\nOn reason: ${event.reason}`);
+    process.exit();
 });
 
 client.on("guildCreate", g => {
@@ -39,7 +44,7 @@ client.on("guildCreate", g => {
 	g.defaultChannel.send("Sup! This is **pod.fm**, thank you for inviting me. You can view my commands with `.help`. Please report any issues to Monskiller#8879");
 
 	client.prefixes[g.id] = config.options.prefix;
-	client.queues[g.id] = { id: g.id, msgc: "", dj: "", queue: [], svotes: [], repeat: "None", auto: false };
+	client.queues[g.id] = { id: g.id, msgc: "", dj: "", vcid: "", queue: [], svotes: [], repeat: "None", auto: false };
 });
 
 client.on("guildDelete", g => {
@@ -105,19 +110,19 @@ client.on("voiceStateUpdate", async (oldM, newM) => {
 	}
 
 	if (oldM.voiceChannelID == client.voiceConnections.get(oldM.guild.id).channel.id && newM.voiceChannelID !== oldM.voiceChannelID && client.queues[oldM.guild.id].dj == oldM.id){
-		let nextDJ = client.queues[oldM.guild.id].queue.find(q => q.req !== oldM.id);
+		let nextDJ = client.queues[oldM.guild.id].queue.find(q => q.req.id !== oldM.id);
 
 		setTimeout( () => {
 			if (client.voiceConnections.get(oldM.guild.id) && !client.voiceConnections.get(oldM.guild.id).channel.members.has(oldM.id)){
-				if (nextDJ){
-					client.queues[oldM.guild.id].dj = nextDJ.req;
+				if (nextDJ && !client.queues[oldM.guild.id].auto){
+					client.queues[oldM.guild.id].dj = nextDJ.req.id;
 					client.channels.get(client.queues[oldM.guild.id].msgc).send({ embed: {
 					color: config.options.embedColour,
 					title: "New Voice Chat DJ",
-					description: `${client.users.get(nextDJ.req) ? `${client.users.get(nextDJ.req).username}#${client.users.get(nextDJ.req).discriminator}` : "Unknown"} Can now use DJ commands`,
+					description: `${nextDJ.req ? `${nextDJ.req.username}#${nextDJ.req.discriminator}` : "Unknown"} Can now use DJ commands`,
 				}});
 				} else {
-					let usr = oldM.voiceChannel.members.filter(u => !u.user.bot).randomKey();
+					let usr = oldM.voiceChannel.members.filter(u => !(permissions.isAdmin(u) || permissions.isDJ(u, client) || u.user.bot || permissions.isBlocked(u))).randomKey();
 					client.queues[oldM.guild.id].dj = usr;
 					client.channels.get(client.queues[oldM.guild.id].msgc).send({ embed: {
 						color: config.options.embedColour,
