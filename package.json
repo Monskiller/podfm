@@ -16,13 +16,14 @@
   "dependencies": {
     "buffered2": "*",
     "discord.js": "^11.1.0",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "keepachangelog": "^0.7.2",
     "moment": "^2.18.1",
     "node-opus": "*",
     "snekfetch": "*",
-    "ytdl-core": "*",
-    "erlpack": "github:hammerandchisel/erlpack",
     "sodium-native": "*",
-    "uws": "*"
+    "uws": "*",
+    "ytdl-core": "*"
   },
   "devDependencies": {},
   "keywords": [
