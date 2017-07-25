@@ -66,10 +66,10 @@ client.on("message", async msg => {
 	let regex = new RegExp(`^\\${client.prefixes[msg.guild.id]}(\\w*[^0-9])?(\\d+)?`, 'i')
 
 	let command = regex.exec(msg.content.split(" ")[0])[1].toLowerCase();
-	const match = msg.content.slice(msg.content.split(" ")[0].length)
+	const match = msg.content.slice(msg.content.split(" ")[0].length);
 
 	const sel = regex.exec(msg.content.split(" ")[0])[2];
-	const optrx = /(?:[^\w]-\w+|--\w+)|^(?:-\w+|--\w+)/gi
+	const optrx = /(?:[^\w]-\w+|--\w+)|^(?:-\w+|--\w+)/gi;
 	const args  = match.replace(optrx, '').trim();
 
 	let options = new Array();

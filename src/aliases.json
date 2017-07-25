@@ -6,6 +6,7 @@
 	"n"   : "now",
 	"z"   : "undo",
 	"uq"  : "unqueue",
+	"pn"  : "playnext",
 	"vol" : "volume",
 	"mh"  : "movehere",
 	"fs"  : "forceskip",

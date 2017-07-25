@@ -199,12 +199,12 @@ exports.run = async function (client, msg, args, options, sel) {
 			})
 
 			if (collector == undefined) {
-				if (client.voiceConnections.get(msg.guild.id).channel.id && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();
+				if (client.voiceConnections.has(msg.guild.id) && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();
 				return;
 			}
 
 			if (!collector.first() || collector.first().content.toLowerCase().startsWith(client.prefixes[msg.guild.id] + "p") || collector.first().content === "c") {
-				if ((!collector.first() || collector.first().content === "c") && client.voiceConnections.get(msg.guild.id).channel.id && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();
+				if ((!collector.first() || collector.first().content === "c") && client.voiceConnections.has(msg.guild.id) && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();
 				return src.delete();
 			};
 

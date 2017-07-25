@@ -1,6 +1,6 @@
 {
   "name": "pod.fm",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "MusicBot for Discord",
   "main": "podfm.js",
   "scripts": {
