@@ -199,7 +199,7 @@ exports.run = async function (client, msg, args, options, sel) {
 		msg.channel.send({ embed: {
 			color: config.options.embedColour,
 			title: "Voice Chat DJ",
-			description: `${msg.author.username}#${msg.author.discriminator} now has access to DJ commands`
+			description: `<@!${msg.author.id}> now has access to DJ commands`
 		}});
 	}
 
