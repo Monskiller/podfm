@@ -9,7 +9,7 @@ module.exports = {
 
 		let results = await sf.get("https://www.googleapis.com/youtube/v3/search").query({
 			part       : "snippet",
-			maxResults : "9",
+			maxResults : "5",
 			type       : type,
 			q          : query,
 			key        : ytk

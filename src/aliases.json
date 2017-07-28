@@ -13,5 +13,6 @@
 	"ps"  : "pause",
 	"r"   : "resume",
 	"st"  : "stop",
-	"vcr" : "voicereset"
+	"vcr" : "voicereset",
+	"cl"  : "changelog"
 }

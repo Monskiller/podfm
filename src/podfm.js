@@ -6,6 +6,7 @@ log 			= require('../util/Log.js')
 const sf		= require("snekfetch");
 const Discord	= require("discord.js");
 const moment	= require('moment');
+const fs 		= require('fs');
 
 const client = new Discord.Client({
 	disableEvents: [
@@ -23,6 +24,7 @@ const client = new Discord.Client({
 client.queues   	= {};
 client.prefixes 	= require("./prefixes.json");
 client.volume 		= require("./volume.json");
+client.updated 		= false;
 
 client.on("ready", async () => {
 	log.info(`${client.user.username}#${client.user.discriminator} ready!`);
@@ -98,6 +100,19 @@ client.on("message", async msg => {
 
 
 client.on("voiceStateUpdate", async (oldM, newM) => {
+	if (!client.voiceConnections.first() && client.updated && newM.id == client.user.id) {
+		let usr = await client.fetchUser('174573919544672258')
+			.catch(log.err);
+
+		let dm = await usr.createDM()
+			.catch(log.err);
+
+		await dm.send(':gear: Now restarting and pushing update...')
+			.catch(log.err);
+
+		process.exit();
+	} 
+
 	if (!client.voiceConnections.get(oldM.guild.id) || !client.voiceConnections.get(newM.guild.id)) return;
 
 	if (oldM.voiceChannelID == client.voiceConnections.get(oldM.guild.id).channel.id && client.voiceConnections.get(oldM.guild.id).channel.members.array().filter(m => !m.user.bot).length == 0 && client.queues[oldM.guild.id].auto) {
@@ -119,7 +134,7 @@ client.on("voiceStateUpdate", async (oldM, newM) => {
 					client.channels.get(client.queues[oldM.guild.id].msgc).send({ embed: {
 					color: config.options.embedColour,
 					title: "New Voice Chat DJ",
-					description: `${nextDJ.req ? `${nextDJ.req.username}#${nextDJ.req.discriminator}` : "Unknown"} Can now use DJ commands`,
+					description: `${nextDJ.req ? `<@!${nextDJ.req.id}>` : "Unknown"} now has access to DJ commands`,
 				}});
 				} else {
 					let usr = oldM.voiceChannel.members.filter(u => !(permissions.isAdmin(u) || permissions.isDJ(u, client) || u.user.bot || permissions.isBlocked(u))).randomKey();
@@ -127,7 +142,7 @@ client.on("voiceStateUpdate", async (oldM, newM) => {
 					client.channels.get(client.queues[oldM.guild.id].msgc).send({ embed: {
 						color: config.options.embedColour,
 						title: "New Voice Chat DJ",
-						description: `${client.users.get(usr) ? `${client.users.get(usr).username}#${client.users.get(usr).discriminator}` : "Unknown"} now has access to DJ commands`,
+						description: `${client.users.get(usr) ? `<@!${usr}>` : "Unknown"} now has access to DJ commands`,
 					}});
 				}
 			}
@@ -140,3 +155,7 @@ client.login(config.keys.discord);
 process.on("uncaughtException", err => {
 	log.err(err.message)
 });
+
+fs.watchFile(__filename, (curr, prev) => {
+	if (curr.mtime.getTime() !== prev.mtime.getTime()) client.updated = true;
+})

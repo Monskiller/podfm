@@ -1,13 +1,29 @@
 # Changelog
 
+## [1.6.0] - 2017-07-25
+### Added
+- `.changelog` command. Check bot's changes in each released version
+- `.changelog` in aliases, `.cl`
+- `.play` Regex for future use
+- Bot self restarts if there's an update to push and no streams are playing
+
+### Changed
+- Temp DJ is now shown as a mention
+- Optimized YT key checks
+- `.dj` and `.queue` now use mentions instead of text to better highlight users
+
+
 ## [1.5.0] - 2017-07-25
 ### Added
-- `.playnext` command, move a song from the queue up to play next
+- `.playnext` command, move a song up the queue to play next
 - `.playnext` in aliases, `.pn`
 
 ### Changed
 - Voice channel checks in `.play` and `.playlist`
 - `.queue` now works both with a space or without, e.g. `.queue 2` = `.queue2`
+
+### Deprecated
+- Queueing playlists with `.play`, use `.playlist` instead
 
 
 ## [1.4.3] - 2017-07-24

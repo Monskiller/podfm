@@ -22,7 +22,7 @@ exports.run = async function(client, msg, args, options, sel) {
         msg.channel.send({ embed: {
             color: config.options.embedColour,
             title: "Current Voice Chat DJ",
-            description: `${client.users.get(dj) ? `${client.users.get(dj).username}#${client.users.get(dj).discriminator}` : 'Unknown'}`
+            description: `${client.users.get(dj) ? `<@!${dj}>` : 'Unknown'}`
         }});
 
     } else {
@@ -30,7 +30,7 @@ exports.run = async function(client, msg, args, options, sel) {
         msg.channel.send({ embed: {
             color: config.options.embedColour,
             title: "Current Voice Chat DJ",
-            description: `${client.users.get(dj) ? `${client.users.get(dj).username}#${client.users.get(dj).discriminator}` : 'Unknown'}`
+            description: `${client.users.get(dj) ? `<@!${dj}>` : 'Unknown'}`
         }});
     }
 }

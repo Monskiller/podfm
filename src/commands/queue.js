@@ -32,7 +32,7 @@ exports.run = function (client, msg, args, options, sel) {
 		fields: [
 			{
 				name: `Queue ${guild.repeat == 'None' ? '' : guild.repeat == 'All' ? '⟳ᴬ' : '⟳¹'} ${guild.auto ? '↯' : ''}`,
-				value: guild.queue.slice(startQueue, endQueue).map((item, i) => `${startQueue + i}. ${item.title} - ${guild.queue[startQueue + i].req ? `**${guild.queue[startQueue + i].req.username}#${guild.queue[startQueue + i].req.discriminator}**` : "**Unknown**"}`).join("\n")
+				value: guild.queue.slice(startQueue, endQueue).map((item, i) => `${startQueue + i}. ${item.title} - ${guild.queue[startQueue + i].req ? `<@!${guild.queue[startQueue + i].req.id}>` : "**Unknown**"}`).join("\n")
 			}
 		],
 		footer: {

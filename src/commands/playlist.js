@@ -80,40 +80,28 @@ exports.run = async function (client, msg, args, options, sel) {
 
 	let res = {};
 
-	if (!ytrxm || !ytrxm[1]) {
+	if (!config.keys.youtube) {
+		if (client.voiceConnections.get(msg.guild.id).channel.id && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();
+		return msg.channel.send({ embed: {
+			color: config.options.embedColour,
+			title: "No YouTube key specified",
+			description: "No YouTube key was configured in 'config.json'. YouTube not available."
+		}});
+	};
 
-		if (!config.keys.youtube) {
-			if (client.voiceConnections.get(msg.guild.id).channel.id && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();
-			return msg.channel.send({ embed: {
-				color: config.options.embedColour,
-				title: "No YouTube key specified",
-				description: "No YouTube key was configured in 'config.json'. YouTube not available."
-			}});
-		};
+	if (!ytrxm || !ytrxm[1]) {
 
         res.src = "youtube";
 		res.type = "search";
 		res.items = await ytutil.search(query, "playlist");
 
-	} else {
+	} else if (ytrxm && ytrxm[1]) {
 
-		if (ytrxm && ytrxm[1]) {
+        res.src = "youtube";
+		res.type = "playlist";
+		res.items = await ytutil.getPlaylist(ytrxm[1], options.includes('sh') | options.includes('shuffle') ? Infinity : "15");
+		if (options.includes('sh') | options.includes('shuffle')) res.items = ytutil.shuffle(res.items);
 
-			if (!config.keys.youtube) {
-				if (client.voiceConnections.get(msg.guild.id).channel.id && guild.queue.length === 0) client.voiceConnections.get(msg.guild.id).disconnect();
-				return msg.channel.send({ embed: {
-					color: config.options.embedColour,
-					title: "No YouTube key specified",
-					description: "No YouTube key was configured in 'config.json'. YouTube not available."
-				}});
-			};
-
-            res.src = "youtube";
-			res.type = "playlist";
-			res.items = await ytutil.getPlaylist(ytrxm[1], options.includes('sh') | options.includes('shuffle') ? Infinity : "15");
-			if (options.includes('sh') | options.includes('shuffle')) res.items = ytutil.shuffle(res.items);
-
-		}
 	};
 
 	if (res.items.length === 0) {

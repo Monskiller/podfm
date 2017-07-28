@@ -3,6 +3,7 @@ const scutil           = require("../../util/soundcloudHandler.js");
 const sthandle         = require("../../util/streamHandler.js");
 
 const ytrx = /(?:youtube\.com.*(?:\?|&)(?:v|list)=|youtube\\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9\_\-]*)/;
+//const ytrx = /(?:youtube\.com.*(?:\?|&)(?:v)=|youtube\\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9\_\-]*)/;
 const scrx = /((https:\/\/)|(http:\/\/)|(www.)|(s))+(soundcloud.com\/)+[a-zA-Z0-9-.]+(\/)+[a-zA-Z0-9-.]+/;
 
 exports.run = async function (client, msg, args, options, sel) {
@@ -154,7 +155,7 @@ exports.run = async function (client, msg, args, options, sel) {
 		let embed = {
 			color: config.options.embedColour,
 			title: `Enqueued`,
-			description: `${res.items[0].title}`
+			description: `${res.items[0].title}${res.type === "playlist" ? '\n\nQueueing playlists with `.play` is deprecated and will get removed in a future update. Use `.playlist` instead' : ''}`
 		}
 		if (res.type === "playlist") embed.footer = {text: `...and ${res.items.slice(1).length} songs.`};
 
