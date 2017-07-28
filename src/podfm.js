@@ -1,12 +1,12 @@
-config      	= require("./config.json");
+config			= require("./config.json");
 if (!config.keys.discord || config.keys.discord.length <= 30)
 	return log.warn("Invalid token specified. Please ensure you haven't specified the ClientID/ClientSecret");
-permissions 	= require("../util/Permissions.js");
-log 			= require('../util/Log.js')
+permissions		= require("../util/Permissions.js");
+log				= require('../util/Log.js')
 const sf		= require("snekfetch");
 const Discord	= require("discord.js");
 const moment	= require('moment');
-const fs 		= require('fs');
+const fs		= require('fs');
 
 const client = new Discord.Client({
 	disableEvents: [
@@ -21,10 +21,10 @@ const client = new Discord.Client({
 	]
 });
 
-client.queues   	= {};
-client.prefixes 	= require("./prefixes.json");
-client.volume 		= require("./volume.json");
-client.updated 		= false;
+client.queues		= {};
+client.prefixes		= require("./prefixes.json");
+client.volume		= require("./volume.json");
+client.updated		= false;
 
 client.on("ready", async () => {
 	log.info(`${client.user.username}#${client.user.discriminator} ready!`);
