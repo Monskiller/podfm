@@ -28,7 +28,7 @@ client.updated		= false;
 
 client.on("ready", async () => {
 	log.info(`${client.user.username}#${client.user.discriminator} ready!`);
-	client.user.setGame(`${config.options.prefix}help`);
+	client.user.setGame(`${config.options.prefix}help - ${config.version}`);
 
 	client.guilds.forEach(g => {
 		if (!client.prefixes[g.id]) client.prefixes[g.id] = config.options.prefix;

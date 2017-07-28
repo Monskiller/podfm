@@ -243,7 +243,7 @@ exports.run = async function (client, msg, args, options, sel) {
 }
 
 exports.usage = {
-	args: "[--autoplay | -auto] <YouTube URL/Playlist/Search | Soundcloud URL>",
+	args: "[--autoplay | -auto] <YouTube URL/Search>",
 	main: "{prefix}{command}{select}",
 	description: "Play the specified song. Use `--autoplay` or `-auto` for a continuous play from relevant YT videos\n\nUse `.play[number]` to pre-select a song, skipping the list\ne.g. `.play1 <song>`",
 	adminOnly: false,

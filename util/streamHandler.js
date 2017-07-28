@@ -10,7 +10,7 @@ exports.play = async function play(guild, client) {
 
 		let related = await ytutil.getRelated(guild.queue[guild.queue.length - 1].id);
 		let index = Math.floor(Math.random() * (related.length-1))+1
-		guild.queue.push({ id: related[index].id.videoId, title: related[index].snippet.title, req: { username: client.user.username, discriminator: client.user.discriminator, id: '' }, src: "youtube" });
+		guild.queue.push({ id: related[index].id.videoId, title: related[index].snippet.title, req: { username: client.user.username, discriminator: client.user.discriminator, id: client.user.id }, src: "youtube" });
 
 	}
 

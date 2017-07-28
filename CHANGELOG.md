@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.6.1] - 2017-07-28
+### Changed
+- Version is now displayed on profile along with the `.help` command
+- `.changelog` now also shows unreleased versions and defaults to current released one
+
+### Fixed
+- Missing mention in `.queue` if bot queues song due to AutoMode
+
+
 ## [1.6.0] - 2017-07-28
 ### Added
 - `.changelog` command. Check bot's changes in each released version

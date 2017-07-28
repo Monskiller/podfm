@@ -21,15 +21,18 @@ exports.run = async function(client, msg, args, options, sel) {
 
     } else if (/[0-9\.]+/.test(args[0])) {
 
-        let rel = changelog.releases.find(rel => rel.version == args[0])
+        let cl = changelog.releases.find(rel => rel.version == args[0])
 
-        if (rel) {
+        if (cl) {
+
+            let check = cl.version.replace(/\./g, '') > config.version.replace(/\./g, '') ? ' - Unreleased' : ''
+
             msg.channel.send({ embed: {
                 color: config.options.embedColour,
-                title: rel.version,
-                fields: pr(rel),
+                title: `${cl.version}${check}`,
+                fields: pr(cl),
 				footer: {
-					text: `Released on ${rel.date}`
+					text: `Released on ${cl.date}`
 				}
             }})
         } else {
@@ -41,7 +44,7 @@ exports.run = async function(client, msg, args, options, sel) {
 
     } else {
 
-        const cl = changelog.releases[0];
+        let cl = changelog.releases.find(rel => rel.version == config.version)
 
         msg.channel.send({ embed: {
             color: config.options.embedColour,
