@@ -49,13 +49,13 @@
 ### Changed
 - Help command now contains legend for AutoPlay and Repeat icons
 - `.play` and `.playlist` use regexp formated strings than just strings
+- AutoPlay now disables if chat is empty rather than leaving it
 
 
 ## [1.3.1] - 2017-07-20
 ### Fixed
-- AutoPlay now disables if chat is empty rather than leaving it
 - Bot cutting out links if it contains dashes
-- AutoPlay only queues if it's the last song in queue
+- AutoPlay filling up the queue rather than waiting for last song
 
 
 ## [1.3.0] - 2017-07-20
