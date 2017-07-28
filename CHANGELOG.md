@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.6.0] - 2017-07-25
+## [1.6.0] - 2017-07-28
 ### Added
 - `.changelog` command. Check bot's changes in each released version
 - `.changelog` in aliases, `.cl`
