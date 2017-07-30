@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.1] - 2017-07-30
+### Added
+- The ability to `.forceskip` multiple songs if followed by a number. e.g. `.forceskip 5` skips 5 songs
+
+### Changed
+- Bypassing the playlist limit now requires DJ role instead of temp DJ access
+
+
 ## [1.7.0] - 2017-07-30
 ### Added
 - DJs have the ability to bypass the playlist queue limit with `[-number]` for a specific ammount or `[-full]` for the whole playlist

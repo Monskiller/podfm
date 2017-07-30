@@ -68,7 +68,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
 	let guild = client.queues[msg.guild.id];
 	let plQ;
-	if (permissions.isDJ(msg.member, client)) plQ = options.some(tx => optrx.test(tx)) ? options.filter(tx => optrx.test(tx))[0] : options.includes('full') ? Infinity : '15';
+	if (permissions.hasRole(msg.member, 'DJ')) plQ = options.some(tx => optrx.test(tx)) ? options.filter(tx => optrx.test(tx))[0] : options.includes('full') ? Infinity : '15';
 	guild.msgc = msg.channel.id;
 	guild.vcid = client.voiceConnections.get(msg.guild.id).channel.id;
 
@@ -210,8 +210,10 @@ exports.run = async function (client, msg, args, options, sel) {
 
 exports.usage = {
 	main: "{prefix}{command}{select}",
-	args: "[--shuffle | -sh] <YouTube Playlist Search/Playlist URL>",
-	description: "Queue a YT Playlist. Use `--shuffle` or `-sh` to shuffle before queuing\n\nUse `.playlist[number]` to pre-select a playlist, skipping the list\ne.g. `.playlist1 <playlist>`",
+	args: "[--shuffle | -sh] [-number | -full] <YouTube Playlist Search/Playlist URL>",
+	description: `Queue a YT Playlist. Use \`--shuffle\` or \`-sh\` to shuffle before queuing\n
+Use \`.playlist[number]\` to pre-select a playlist, skipping the list\ne.g. \`.playlist1 <playlist>\`\n
+Use \`-number\` or \`-full\` to bypass limit as DJ\ne.g.\`.playlist -30 <playlist>\``,
 	adminOnly: false,
 	DJ: false
 };
