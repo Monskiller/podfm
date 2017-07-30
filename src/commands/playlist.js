@@ -3,6 +3,7 @@ const scutil           = require("../../util/soundcloudHandler.js");
 const sthandle         = require("../../util/streamHandler.js");
 
 const ytrx = /(?:youtube\.com.*(?:\?|&)(?:v|list)=|youtube\\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9\_\-]*)/;
+const optrx = /\d+/;
 
 exports.run = async function (client, msg, args, options, sel) {
 	
@@ -66,6 +67,8 @@ exports.run = async function (client, msg, args, options, sel) {
 		}});
 
 	let guild = client.queues[msg.guild.id];
+	let plQ;
+	if (permissions.isDJ(msg.member, client)) plQ = options.some(tx => optrx.test(tx)) ? options.filter(tx => optrx.test(tx))[0] : options.includes('full') ? Infinity : '15';
 	guild.msgc = msg.channel.id;
 	guild.vcid = client.voiceConnections.get(msg.guild.id).channel.id;
 
@@ -99,8 +102,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
         res.src = "youtube";
 		res.type = "playlist";
-		res.items = await ytutil.getPlaylist(ytrxm[1], options.includes('sh') | options.includes('shuffle') ? Infinity : "15");
-		if (options.includes('sh') | options.includes('shuffle')) res.items = ytutil.shuffle(res.items);
+		res.items = await ytutil.getPlaylist(ytrxm[1], plQ, (options.includes('sh') | options.includes('shuffle')));
 
 	};
 
@@ -128,8 +130,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
 		if (sel) {
 
-			res.songs = await ytutil.getPlaylist(res.items[sel - 1].id.playlistId, options.includes('sh') | options.includes('shuffle') ? Infinity : "15"); 
-			if (options.includes('sh') | options.includes('shuffle')) res.songs = ytutil.shuffle(res.songs);
+			res.songs = await ytutil.getPlaylist(res.items[sel - 1].id.playlistId, plQ, (options.includes('sh') | options.includes('shuffle')));
 			res.songs.map(v => guild.queue.push({ id: v.id, title: v.title, req: { username: msg.author.username, discriminator: msg.author.discriminator, id: msg.author.id }, src: res.src }));
 
 			msg.channel.send({embed: {
@@ -148,7 +149,7 @@ exports.run = async function (client, msg, args, options, sel) {
 				title: "Select Playlist",
 				description: res.items.map((v, i) => `**${i + 1}.** ${v.snippet.title}`).join("\n"),
 				footer: {
-					text: "1 to 9 || c to cancel selection"
+					text: `1 to ${res.items.length} || c to cancel selection`
 				}
 			}});
 
@@ -176,8 +177,7 @@ exports.run = async function (client, msg, args, options, sel) {
 
 			if (msg.channel.permissionsFor(client.user).has('MANAGE_MESSAGES')) collector.first().delete();
 
-			res.songs = await ytutil.getPlaylist(res.items[collector.first().content - 1].id.playlistId, options.includes('sh') | options.includes('shuffle') ? Infinity : "15"); 
-			if (options.includes('sh') | options.includes('shuffle')) res.songs = ytutil.shuffle(res.songs);
+			res.songs = await ytutil.getPlaylist(res.items[collector.first().content - 1].id.playlistId, plQ, (options.includes('sh') | options.includes('shuffle')));
 			res.songs.map(v => guild.queue.push({ id: v.id, title: v.title, req: { username: msg.author.username, discriminator: msg.author.discriminator, id: msg.author.id }, src: res.src }));
 
 			src.edit({embed: {

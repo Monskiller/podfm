@@ -9,7 +9,7 @@ module.exports = {
 
 		let results = await sf.get("https://www.googleapis.com/youtube/v3/search").query({
 			part       : "snippet",
-			maxResults : "5",
+			maxResults : "10",
 			type       : type,
 			q          : query,
 			key        : ytk
@@ -24,7 +24,7 @@ module.exports = {
 
 		let results = await sf.get("https://www.googleapis.com/youtube/v3/search").query({
 			part       			: "snippet",
-			maxResults 			: "8",
+			maxResults 			: "5",
 			type       			: "video",
 			relatedToVideoId	: vidID,
 			key        			: ytk
@@ -35,7 +35,9 @@ module.exports = {
 		return results.body.items;
 	},
 
-	async getPlaylist(id, limit, page = "", videos = []) {
+	async getPlaylist(id, limit, shuff, page = "", videos = []) {
+
+		let lim = shuff ? Infinity : limit ? limit : '15';
 
 		let req = await sf.get('https://www.googleapis.com/youtube/v3/playlistItems').query({
 			maxResults    : "50",
@@ -56,9 +58,11 @@ module.exports = {
 			videos.push({ id: video.snippet.resourceId.videoId, title: video.snippet.title });
 		}
 
-		if (videos.length >= limit) return videos.slice(0, limit);
+		if (videos.length >= lim) return videos.slice(0, lim);
 
-		if (req.body.nextPageToken) return await module.exports.getPlaylist(id, limit, req.body.nextPageToken, videos);
+		if (req.body.nextPageToken) return await module.exports.getPlaylist(id, limit, shuff, req.body.nextPageToken, videos);
+
+		if (shuff) return module.exports.shuffle(videos, limit);
 		return videos;
 	},
 
@@ -121,9 +125,9 @@ module.exports = {
 		return hours + minutes + seconds;
 	},
 
-	shuffle(array) {
+	shuffle(array, lenght) {
 
-		var m = array.length, t, i;
+		var m = lenght && lenght < array.lenght ? lenght : array.length, t, i;
 		while (m) {
 			i = Math.floor(Math.random() * m--);
 
@@ -132,7 +136,7 @@ module.exports = {
 			array[i] = t;
 		}
 
-		return array.slice(0, 15);
+		return array.slice(0, lenght);
 	},
 
 	fsReadFile(path) {

@@ -43,7 +43,7 @@ client.on('disconnect', (event) => {
 
 client.on("guildCreate", g => {
 	if ((g.members.filter(m => m.bot).length / g.members.size) >= 0.68) return g.leave();
-	g.defaultChannel.send("Sup! This is **pod.fm**, thank you for inviting me. You can view my commands with `.help`. Please report any issues to Monskiller#8879");
+	g.defaultChannel.send(`Sup! This is **${client.user.username}**, thank you for inviting me. You can view my commands with \`${config.options.prefix}help\`. Please report any issues to Monskiller#8879`);
 
 	client.prefixes[g.id] = config.options.prefix;
 	client.queues[g.id] = { id: g.id, msgc: "", dj: "", vcid: "", queue: [], svotes: [], repeat: "None", auto: false };

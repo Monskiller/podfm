@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.7.0] - 2017-07-28
+### Added
+- DJs have the ability to bypass the playlist queue limit with `[-number]` for a specific ammount or `[-full]` for the whole playlist
+
+### Changed
+- `.play` and `.playlist` now return 10 results
+- AutoMode now looks for 4 relevant songs rather than 8
+
+### Removed
+- The ability to queue playlists with `.play`, use `.playlist` instead
+
+### Fixed
+- `.play` and `.playlist` showing incorrect selection number bracket
+
+
 ## [1.6.1] - 2017-07-28
 ### Changed
 - Version is now displayed on profile along with the `.help` command
@@ -69,7 +84,7 @@
 
 ## [1.3.0] - 2017-07-20
 ### Added
-- AutoPlay! Add `-auto` or `--autoplay` to `.play` to let the bot queue songs relative to yours
+- AutoPlay! Add `[-auto]` or `[--autoplay]` to `.play` to let the bot queue songs relative to yours
 
 
 ## [1.2.6] - 2017-07-19

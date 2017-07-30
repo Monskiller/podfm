@@ -2,8 +2,8 @@ const ytutil           = require("../../util/youtubeHandler.js");
 const scutil           = require("../../util/soundcloudHandler.js");
 const sthandle         = require("../../util/streamHandler.js");
 
-const ytrx = /(?:youtube\.com.*(?:\?|&)(?:v|list)=|youtube\\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9\_\-]*)/;
-//const ytrx = /(?:youtube\.com.*(?:\?|&)(?:v)=|youtube\\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9\_\-]*)/;
+const ytplrx = /(?:youtube\.com.*(?:\?|&)(?:v|list)=|youtube\\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9\_\-]*)/;
+const ytrx = /(?:youtube\.com.*(?:\?|&)(?:v)=|youtube\\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9\_\-]*)/;
 const scrx = /((https:\/\/)|(http:\/\/)|(www.)|(s))+(soundcloud.com\/)+[a-zA-Z0-9-.]+(\/)+[a-zA-Z0-9-.]+/;
 
 exports.run = async function (client, msg, args, options, sel) {
@@ -112,15 +112,8 @@ exports.run = async function (client, msg, args, options, sel) {
 			};
 
 			res.src = "youtube";
-
-			if (ytrxm[1].length >= 15) {
-				res.type = "playlist";
-				res.items = await ytutil.getPlaylist(ytrxm[1], options.includes('sh') | options.includes('shuffle') ? Infinity : "15");
-				if (options.includes('sh') | options.includes('shuffle')) res.items = ytutil.shuffle(res.items);
-			} else {
-				res.type = "url";
-				res.items = await ytutil.videoInfo(ytrxm[1]);
-			}
+			res.type = "url";
+			res.items = await ytutil.videoInfo(ytrxm[1]);
 
 		} else {
 
@@ -155,9 +148,9 @@ exports.run = async function (client, msg, args, options, sel) {
 		let embed = {
 			color: config.options.embedColour,
 			title: `Enqueued`,
-			description: `${res.items[0].title}${res.type === "playlist" ? '\n\nQueueing playlists with `.play` is deprecated and will get removed in a future update. Use `.playlist` instead' : ''}`
+			description: `${res.items[0].title}`
 		}
-		if (res.type === "playlist") embed.footer = {text: `...and ${res.items.slice(1).length} songs.`};
+		if (query.match(ytplrx)[1].length >= 15) embed.footer = {text: `If you intended to queue a playlist, please use .playlist instead`};
 
 		msg.channel.send({ embed: embed });
 
@@ -183,7 +176,7 @@ exports.run = async function (client, msg, args, options, sel) {
 				title: "Select Song",
 				description: res.items.map((v, i) => `**${i + 1}.** ${v.snippet.title}`).join("\n"),
 				footer: {
-					text: "1 to 9 || c to cancel selection"
+					text: `1 to ${res.items.length} || c to cancel selection`
 				}
 			}});
 
