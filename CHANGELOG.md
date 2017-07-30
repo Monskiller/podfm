@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.7.0] - 2017-07-28
+## [1.7.0] - 2017-07-30
 ### Added
 - DJs have the ability to bypass the playlist queue limit with `[-number]` for a specific ammount or `[-full]` for the whole playlist
 
